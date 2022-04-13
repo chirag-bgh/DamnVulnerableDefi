@@ -118,7 +118,6 @@ import "./SimpleGovernance.sol";
 
 contract SelfieHack {
 
-    // ERC20Snapshot public token;
     DamnValuableTokenSnapshot public token;
     SelfiePool pool;
     SimpleGovernance  gov;
